@@ -23,9 +23,6 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-//    @Autowired
-//    private UserCredentialsService userCredentialsService;
-
     @RequestMapping
     public String listMovies(Model model) {
         model.addAttribute("movies", movieService.findAll());
@@ -80,13 +77,5 @@ public class MovieController {
         return "redirect:/movies";
     }
 
-    @RequestMapping("/vote")
-    public String userVote(HttpServletRequest request,
-                           @RequestParam(value = "movieId", required = false) Long movieId) {//, Principal principal ) {
 
-        Movie movie = movieService.findOne(movieId);
-        movieService.voteMovie(movieId);
-        return "redirect:/movies";
-
-    }
 }

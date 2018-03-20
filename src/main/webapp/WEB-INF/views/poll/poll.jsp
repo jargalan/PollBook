@@ -52,7 +52,7 @@
                                 <td><c:if test="${movie.imdb != ''}">
                                     <a href="${movie.imdb}" target="blank"> <i	class="fa fa-external-link-square"> IMDb</i></a>
                                 </c:if></td>
-                                <td><form:form id="vote" action="vote" method="post">
+                                <td><form:form id="vote" action="/polls/vote/${poll.id}" method="post">
                                     <button name="movieId" value="${movie.id}"
                                             class="btn btn-primary"
                                             <c:out value="${hasVoted == true ? 'disabled' : ''}"/>

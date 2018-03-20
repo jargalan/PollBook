@@ -13,7 +13,7 @@ public class Poll {
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)//, cascade = CascadeType.ALL)
     @JoinTable( name="Poll_User", joinColumns={@JoinColumn(name="Poll_ID")},
             inverseJoinColumns={ @JoinColumn(name="UserCredentials_ID")} )
     Set<UserCredentials> users = new HashSet<UserCredentials>();
@@ -45,6 +45,10 @@ public class Poll {
 
     public void setUsers(Set<UserCredentials> users) {
         this.users = users;
+    }
+
+    public void addUser(UserCredentials user) {
+        this.users.add(user);
     }
 
     public Set<Movie> getMovies() {

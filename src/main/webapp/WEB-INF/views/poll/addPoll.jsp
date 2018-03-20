@@ -31,21 +31,6 @@
             <div class="form-group">
                 <label class="control-label col-lg-2 col-lg-2" for="movies">Movies</label>
                 <div class="col-lg-10">
-                    <%--<form:select path="movies" id="movies" class="form:input-large">--%>
-                        <%--<option selected="selected" disabled="disabled"></option>--%>
-                        <%--<c:forEach items="${movieList}" var="movie">--%>
-                        <%--<form:option value="${movie.id}">${movie.title}--%>
-                        <%--</form:option>--%>
-                        <%--</c:forEach>--%>
-                    <%--</form:select>--%>
-                    <%--<c:forEach items="${movieList}" var="movie">--%>
-                        <%--<form:checkbox path="movies" value="${movie}" label="${movie.id}" />--%>
-                        <%--<c:out value="${movie.title}" /><br/>--%>
-                    <%--</c:forEach>--%>
-
-                    <%--<form:select path="movies" id="movies">--%>
-                        <%--<form:options items="${movieList}" itemValue="id" itemLabel="title" />--%>
-                    <%--</form:select>--%>
                     <form:select path="movies" multiple="true" items="${movieList}" itemLabel="title" itemValue="id"/>
                     <form:errors path="movies" cssClass="text-danger"/>
                 </div>

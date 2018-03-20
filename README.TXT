@@ -1,8 +1,13 @@
+Spring MVC project of Movie Poll.
+=================================
 
- MVC of Member with Products, UserCredentials & Authority.
- Like MemberSpringMVC -  USING SPRING SECURITY
- 
- Has login 
- user name / password
+1.Prepare sql.
+
+create database teamcoin;
+
+run populate.sql
+
+2.Login (username / password)
+
  admin/admin
  guest/guest

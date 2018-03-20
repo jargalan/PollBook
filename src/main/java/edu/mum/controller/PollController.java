@@ -4,9 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import edu.mum.domain.Movie;
+import edu.mum.domain.UserCredentials;
 import edu.mum.service.MovieService;
+import edu.mum.service.UserCredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +32,9 @@ public class PollController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private UserCredentialsService userCredentialsService;
 
     @RequestMapping
     public String listPolls(Model model) {
@@ -54,7 +61,7 @@ public class PollController {
     public String savePoll(@Valid @ModelAttribute("newPoll") Poll poll,
                            BindingResult result, Model model) {
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             model.addAttribute("movieList", movieService.findAll());
             return "poll/addPoll";
         }
@@ -65,10 +72,31 @@ public class PollController {
 
     }
 
+    @RequestMapping(value = "/vote/{id}", method = RequestMethod.POST)
+    public String userVote(@PathVariable("id") Long id,
+                           @RequestParam(value = "movieId", required = false) Long movieId) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserCredentials user = userCredentialsService.findByUserName(auth.getName());
+
+        System.out.println("======== " + auth.getName() + "-----------" + auth.getCredentials());
+        Poll poll = pollService.findOne(id);
+
+        if (!poll.getUsers().contains(user)) {
+            poll.addUser(user);
+//            Movie movie = movieService.findOne(movieId);
+            movieService.voteMovie(movieId);
+            pollService.save(poll);
+        }
+
+        return "redirect:/movies";
+
+    }
+
     @InitBinder
-    protected void initBinder(WebDataBinder binder) throws Exception{
-        binder.registerCustomEditor(Set.class,"movies", new CustomCollectionEditor(Set.class){
-            protected Object convertElement(Object element){
+    protected void initBinder(WebDataBinder binder) throws Exception {
+        binder.registerCustomEditor(Set.class, "movies", new CustomCollectionEditor(Set.class) {
+            protected Object convertElement(Object element) {
                 if (element instanceof String) {
                     return movieService.findOne(Long.valueOf(element.toString()));
                 }
